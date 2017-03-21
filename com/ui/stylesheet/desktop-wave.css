@@ -1,0 +1,66 @@
+body {
+  padding-top: 20px;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.mdl-dialog {
+  border: none;
+  box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2);
+  width: 900px;
+  height: 400px }
+  .mdl-dialog__title {
+    position: relative;
+    height: 50px;
+    padding: 12px 10px 0;
+    margin: 0;
+    font-size: 2.5rem; }
+    .mdl-dialog__title h3:first-child {
+      position: absolute;
+      margin: 0; }
+    .mdl-dialog__title h3:last-child {
+      position: absolute;
+      margin: 0;
+      right: 0; }
+  .mdl-dialog__actions {
+    bottom: 0;
+    position: relative;
+    right: 0;
+    padding: 8px 8px 8px 24px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row-reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap; }
+    .mdl-dialog__actions > * {
+      margin-right: 16px;
+      height: 40px; 
+      }
+      .mdl-dialog__actions > *:first-child {
+        margin-right: 0; }
+    .mdl-dialog__actions--full-width {
+      padding: 0 0 8px 0; }
+      .mdl-dialog__actions--full-width > * {
+        height: 50px;
+        -webkit-flex: 0 0 100%;
+            -ms-flex: 0 0 100%;
+                flex: 0 0 100%;
+        padding-right: 32px;
+        margin-right: 0;
+        text-align: right; }
+  .mdl-dialog__content {
+    position: relative;
+    height: 270px;
+    padding: 14px 0px 12px 0px;
+    color: rgba(0,0,0, 0.54); }
+    .mdl-dialog__content .days {
+      position: relative;
+      width: 205px;
+      float: left;
+      height: 100%;
+      padding: 10px;
+    }

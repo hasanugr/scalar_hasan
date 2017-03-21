@@ -1,4 +1,4 @@
-scalar.ui.launcher = function () {
+/*scalar.ui.launcher = function () {
   this.config = scalar.ui.launcher.config;
   scalar.exec('cd com/bash && bash applicationList.sh', function (output) {
     output = '[' + output.slice(0, output.length - 2) + ']';
@@ -21,3 +21,4 @@ scalar.ui.launcher.prototype = {
 
 scalar.ui.launcher = new scalar.ui.launcher();
 
+*/

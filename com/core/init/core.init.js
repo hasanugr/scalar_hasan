@@ -37,6 +37,16 @@ scalar.lib = {
     ELEMENT: 'script',
     TYPE: "text/javascript",
     SRC: "com/ui/launcher/ui.launcher.js"
+  },  
+  DESKTOP: {
+    ELEMENT: 'script',
+    TYPE: "text/javascript",
+    SRC: "com/ui/desktop/ui.desktop.js"
+  },
+  WAVE: {
+    ELEMENT: 'script',
+    TYPE: "text/javascript",
+    SRC: "com/ui/desktop/wave/ui.desktop.wave.js"
   }
 }
 
