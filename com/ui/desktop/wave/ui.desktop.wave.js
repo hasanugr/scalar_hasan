@@ -101,7 +101,6 @@ scalar.ui.desktop.wave = function() {
           scalar.ui.desktop.wave.day5 = [];
 
           for (var j = 0 ; j < scalar.ui.desktop.wave.weatherDetails.length ; j++){
-            console.log(parseInt(scalar.ui.desktop.wave.weatherDetails[j].dt_txt.split(' ')[0].split('-')[2]) + "=="+ scalar.ui.desktop.wave.dayNumber)
             switch(parseInt(scalar.ui.desktop.wave.weatherDetails[j].dt_txt.split(' ')[0].split('-')[2])) {
                 case scalar.ui.desktop.wave.dayNumber:
                     scalar.ui.desktop.wave.day1.push(scalar.ui.desktop.wave.weatherDetails[j]);
@@ -128,9 +127,29 @@ scalar.ui.desktop.wave = function() {
           scalar.ui.select('#dialog .weather-detail .basic-tempture').innerHTML = Math.round(scalar.ui.desktop.wave.day1[0].main.temp) + " °C";
           scalar.ui.select('#dialog .spesific-detail .sNem').innerHTML = "Nem Oranı: %" + scalar.ui.desktop.wave.day1[0].main.humidity;
           scalar.ui.select('#dialog .spesific-detail .wSpeed').innerHTML = "Rüzgar Hızı: " + scalar.ui.desktop.wave.day1[0].wind.speed + " m/s";
-          /*scalar.ui.select('#dialog .spesific-detail .wWay').innerHTML = 
-          scalar.ui.select('#dialog .spesific-detail .maxTemp').innerHTML = 
-          scalar.ui.select('#dialog .spesific-detail .minTemp').innerHTML = */
+          scalar.ui.desktop.wave.findWay(scalar.ui.desktop.wave.day1[0].wind.deg);
+          scalar.ui.select('#dialog .spesific-detail .wWay').innerHTML = "Rüzgar Yönü: " + scalar.ui.desktop.wave.windWay;
+          scalar.ui.desktop.wave.mmControl(scalar.ui.desktop.wave.day1);
+          scalar.ui.select('#dialog .spesific-detail .maxTemp').innerHTML = "Max Sıcaklık: " + Math.round(scalar.ui.desktop.wave.maxTemp) + " °C";
+          scalar.ui.select('#dialog .spesific-detail .minTemp').innerHTML = "Min Sıcaklık: " + Math.round(scalar.ui.desktop.wave.minTemp) + " °C";
+          scalar.ui.select('#dialog .basic-detail .weather-city').innerHTML = scalar.ui.desktop.wave.location.response.regionName + ", " + scalar.ui.desktop.wave.location.response.country.toUpperCase();
+          
+          scalar.exec('date "+%u"', function(output) {
+            var toDayOrderSmall = parseInt(output) - 1;
+            
+            scalar.ui.desktop.wave.weaterArray = [scalar.ui.desktop.wave.day2,scalar.ui.desktop.wave.day3,scalar.ui.desktop.wave.day4,scalar.ui.desktop.wave.day5]
+            for (var i = 2; i <= 5; i++) {
+              var dayOrderSmall = i + toDayOrderSmall;
+              var weatherId = scalar.ui.desktop.wave.weaterArray[i-2][4].weather[0].id;
+              scalar.ui.desktop.wave.weather('#dialog .day-'+ (i-1).toString(), weatherId, 0, false);
+              scalar.ui.select('#dialog .day-'+ (i-1).toString() + ' .dDay').innerHTML = scalar.ui.desktop.wave.days[toDayOrderSmall+i-1];
+              scalar.ui.desktop.wave.mmControl(scalar.ui.desktop.wave.weaterArray[i-2]);
+              scalar.ui.select('#dialog .day-'+ (i-1).toString() + ' .dMax').innerHTML = "Max: " + Math.round(scalar.ui.desktop.wave.maxTemp) + " °C";
+              scalar.ui.select('#dialog .day-'+ (i-1).toString() + ' .dMin').innerHTML = "Min: " + Math.round(scalar.ui.desktop.wave.minTemp) + " °C";
+              scalar.ui.select('#dialog .day-'+ (i-1).toString() + ' .dNem').innerHTML = "Nem: %" + scalar.ui.desktop.wave.weaterArray[i-2][4].main.humidity;
+              scalar.ui.select('#dialog .day-'+ (i-1).toString() + ' .dWind').innerHTML = "Rüzgar: " + scalar.ui.desktop.wave.weaterArray[i-2][4].wind.speed + " m/s";
+            }
+          })
 
 
           
@@ -248,6 +267,71 @@ scalar.ui.desktop.wave.prototype = {
   getWaveUIElement: function() {
    
   },
+  findWay: function(degree) {
+
+    if (degree>=348 || degree<11){
+      scalar.ui.desktop.wave.windWay = "Kuzey";
+    }
+    if (degree>=11 || degree<33){
+      scalar.ui.desktop.wave.windWay = "Kuzey Kuzeydoğu";
+    }
+    if (degree>=33 || degree<56){
+      scalar.ui.desktop.wave.windWay = "Kuzeydoğu";
+    }
+    if (degree>=56 || degree<78){
+      scalar.ui.desktop.wave.windWay = "Doğu Kuzeydoğu";
+    }
+    if (degree>=78 || degree<101){
+      scalar.ui.desktop.wave.windWay = "Doğu";
+    }
+    if (degree>=101 || degree<123){
+      scalar.ui.desktop.wave.windWay = "Doğu Güneydoğu";
+    }
+    if (degree>=123 || degree<146){
+      scalar.ui.desktop.wave.windWay = "Güneydoğu";
+    }
+    if (degree>=146 || degree<168){
+      scalar.ui.desktop.wave.windWay = "Güney Güneydoğu";
+    }
+    if (degree>=168 || degree<191){
+      scalar.ui.desktop.wave.windWay = "Güney";
+    }
+    if (degree>=191 || degree<213){
+      scalar.ui.desktop.wave.windWay = "Güney Güneybatı";
+    }
+    if (degree>=213 || degree<236){
+      scalar.ui.desktop.wave.windWay = "Güneybatı";
+    }
+    if (degree>=236 || degree<258){
+      scalar.ui.desktop.wave.windWay = "Batı Güneydoğu";
+    }
+    if (degree>=258 || degree<281){
+      scalar.ui.desktop.wave.windWay = "Batı";
+    }
+    if (degree>=281 || degree<303){
+      scalar.ui.desktop.wave.windWay = "Batı Kuzeybatı";
+    }
+    if (degree>=303 || degree<326){
+      scalar.ui.desktop.wave.windWay = "Kuzeybatı";
+    }
+    if (degree>=326 || degree<348){
+      scalar.ui.desktop.wave.windWay = "Kuzey Kuzeybatı";
+    }
+        
+  },
+  mmControl: function(tempArray) {
+    scalar.ui.desktop.wave.minTemp = tempArray[0].main.temp;
+    scalar.ui.desktop.wave.maxTemp = tempArray[0].main.temp;
+    for (var i = 0 ; i < tempArray.length ; i++){
+      if (tempArray[i].main.temp<scalar.ui.desktop.wave.minTemp){
+        scalar.ui.desktop.wave.minTemp = tempArray[i].main.temp;
+      }
+      if (tempArray[i].main.temp>scalar.ui.desktop.wave.maxTemp){
+        scalar.ui.desktop.wave.maxTemp = tempArray[i].main.temp;
+      }
+    }
+    
+  },
   dateAndTime: function() {
     
     scalar.exec('date "+%d %B %Y, %A"', function(output) {
@@ -290,14 +374,14 @@ scalar.ui.desktop.wave.prototype = {
           if (this.timeValue < 7 || this.timeValue > 18) {
             if (control) {
               scalar.ui.select(select + ' .basicIcon div').className = 'icon-moon';
-              scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak.";
+              scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak. Güzel havanın tadını çıkartmayı unutmayın.";
             } else {
               scalar.ui.select(select + ' .basicIcon div').className = 'icon-moon';
             }
           } else {
             if (control) {
               scalar.ui.select(select + ' .basicIcon div').className = 'icon-sun';
-              scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak.";
+              scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak. Güzel havanın tadını çıkartmayı unutmayın.";
             } else {
               scalar.ui.select(select + ' .basicIcon div').className = 'icon-sun';
             }
