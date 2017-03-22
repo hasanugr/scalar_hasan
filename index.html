@@ -8,6 +8,7 @@
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&amp;subset=latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="com/ui/stylesheet/desktop-wave.css">
+  <link rel="stylesheet" href="com/ui/stylesheet/font.css">
 </head>
 
 <body>
@@ -17,14 +18,106 @@
 
   <dialog id="dialog" class="mdl-dialog">
     <div class="mdl-dialog__title">
-      <h3>21:48 - 12 Haziran Pazartesi</h3>
-      <h3>24* OO</h3>
+      <h3 class="weather-time"></h3>
+      <h3 class="weather-date"></h3>
+      <div class="weather-detail">
+        <div class="basic-detail">
+          <div class="basicIcon">
+            <div></div>
+          </div>
+          <h2 class="basic-tempture"></h2>
+        </div>
+        <div class="spesific-detail">
+          <div class="sNem detail-string"></div>
+          <div class="wSpeed detail-string"></div>
+          <div class="wWay detail-string">Sıcaklık: 12* C</div>
+          <div class="maxTemp detail-string">Sıcaklık: 12* C</div>
+          <div class="minTemp detail-string">Sıcaklık: 12* C</div>
+        </div>
+        <div class="daily-weather-commend"></div>
+      </div>
     </div>
     <div class="mdl-dialog__content">
-      <div class="days day-1"></div>
-      <div class="days day-2"></div>
-      <div class="days day-3"></div>
-      <div class="days day-4"></div>
+      <div class="days day-1">
+        <div class="basicIcon"> 
+          <div class="icon-snowy2"></div>
+        </div>
+        <div class="dDetail"> 
+          <div class="dDay">Çarşamba</div>
+          <div class="dString"> 
+            <div class="sLeft">
+              <span class="dsTempLeft dMax">Max: 17* C</span>
+              </br>
+              <span class="dsTempLeft dMin">Min: 5* C</span>
+            </div>
+            <div class="sRight">
+              <span class="dsTempRight dNem">Nem: %17</span>
+              </br>
+              <span class="dsTempRight dWind">Rüzgar: 7.2 m/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="days day-2">
+        <div class="basicIcon"> 
+          <div class="icon-snowy"></div>
+        </div>
+        <div class="dDetail"> 
+          <div class="dDay">Perşembe</div>
+          <div class="dString"> 
+            <div class="sLeft">
+              <span class="dsTempLeft dMax">Max: 17* C</span>
+              </br>
+              <span class="dsTempLeft dMin">Min: 5* C</span>
+            </div>
+            <div class="sRight">
+              <span class="dsTempRight dNem">Nem: %17</span>
+              </br>
+              <span class="dsTempRight dWind">Rüzgar: 7.2 m/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="days day-3">
+        <div class="basicIcon"> 
+          <div class="icon-snowy3"></div>
+        </div>
+        <div class="dDetail"> 
+          <div class="dDay">Cuma</div>
+          <div class="dString"> 
+            <div class="sLeft">
+              <span class="dsTempLeft dMax">Max: 17* C</span>
+              </br>
+              <span class="dsTempLeft dMin">Min: 5* C</span>
+            </div>
+            <div class="sRight">
+              <span class="dsTempRight dNem">Nem: %17</span>
+              </br>
+              <span class="dsTempRight dWind">Rüzgar: 7.2 m/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="days day-4">
+        <div class="basicIcon"> 
+          <div class="icon-snowy2"></div>
+        </div>
+        <div class="dDetail"> 
+          <div class="dDay">Cumartesi</div>
+          <div class="dString"> 
+            <div class="sLeft">
+              <span class="dsTempLeft dMax">Max: 17* C</span>
+              </br>
+              <span class="dsTempLeft dMin">Min: 5* C</span>
+            </div>
+            <div class="sRight">
+              <span class="dsTempRight dNem">Nem: %17</span>
+              </br>
+              <span class="dsTempRight dWind">Rüzgar: 7.2 m/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="mdl-dialog__actions">
       <button type="button" class="mdl-button">Kapat</button>

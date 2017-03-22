@@ -92,7 +92,7 @@ scalar.ui.desktop.wave = function() {
     try {
       if (scalar.ui.desktop.wave.getIp.weather.response.list[0].weather[0].description) {
           
-          scalar.ui.desktop.wave.a = scalar.ui.desktop.wave.getIp.weather.response.list;
+          scalar.ui.desktop.wave.weatherDetails = scalar.ui.desktop.wave.getIp.weather.response.list;
           
           scalar.ui.desktop.wave.day1 = [];
           scalar.ui.desktop.wave.day2 = [];
@@ -100,28 +100,38 @@ scalar.ui.desktop.wave = function() {
           scalar.ui.desktop.wave.day4 = [];
           scalar.ui.desktop.wave.day5 = [];
 
-          for (var j = 0 ; j < scalar.ui.desktop.wave.a.length ; j++){
-            console.log(parseInt(scalar.ui.desktop.wave.a[j].dt_txt.split(' ')[0].split('-')[2]) + "=="+ scalar.ui.desktop.wave.dayNumber)
-            switch(parseInt(scalar.ui.desktop.wave.a[j].dt_txt.split(' ')[0].split('-')[2])) {
+          for (var j = 0 ; j < scalar.ui.desktop.wave.weatherDetails.length ; j++){
+            console.log(parseInt(scalar.ui.desktop.wave.weatherDetails[j].dt_txt.split(' ')[0].split('-')[2]) + "=="+ scalar.ui.desktop.wave.dayNumber)
+            switch(parseInt(scalar.ui.desktop.wave.weatherDetails[j].dt_txt.split(' ')[0].split('-')[2])) {
                 case scalar.ui.desktop.wave.dayNumber:
-                    scalar.ui.desktop.wave.day1.push(scalar.ui.desktop.wave.a[j]);
+                    scalar.ui.desktop.wave.day1.push(scalar.ui.desktop.wave.weatherDetails[j]);
                     break;
                 case scalar.ui.desktop.wave.dayNumber+1:
-                    scalar.ui.desktop.wave.day2.push(scalar.ui.desktop.wave.a[j]);
+                    scalar.ui.desktop.wave.day2.push(scalar.ui.desktop.wave.weatherDetails[j]);
                     break;
                 case scalar.ui.desktop.wave.dayNumber+2:
-                    scalar.ui.desktop.wave.day3.push(scalar.ui.desktop.wave.a[j]);
+                    scalar.ui.desktop.wave.day3.push(scalar.ui.desktop.wave.weatherDetails[j]);
                     break;
                   case scalar.ui.desktop.wave.dayNumber+3:
-                    scalar.ui.desktop.wave.day4.push(scalar.ui.desktop.wave.a[j]);
+                    scalar.ui.desktop.wave.day4.push(scalar.ui.desktop.wave.weatherDetails[j]);
                     break;
                   case scalar.ui.desktop.wave.dayNumber+4:
-                    scalar.ui.desktop.wave.day5.push(scalar.ui.desktop.wave.a[j]);
+                    scalar.ui.desktop.wave.day5.push(scalar.ui.desktop.wave.weatherDetails[j]);
                     break;
                 default:
                     break;
             }
           }
+
+          var weatherIdSmall = scalar.ui.desktop.wave.day1[0].weather[0].id;
+          scalar.ui.desktop.wave.weather('#dialog .weather-detail', weatherIdSmall, 0, true);
+          scalar.ui.select('#dialog .weather-detail .basic-tempture').innerHTML = Math.round(scalar.ui.desktop.wave.day1[0].main.temp) + " °C";
+          scalar.ui.select('#dialog .spesific-detail .sNem').innerHTML = "Nem Oranı: %" + scalar.ui.desktop.wave.day1[0].main.humidity;
+          scalar.ui.select('#dialog .spesific-detail .wSpeed').innerHTML = "Rüzgar Hızı: " + scalar.ui.desktop.wave.day1[0].wind.speed + " m/s";
+          /*scalar.ui.select('#dialog .spesific-detail .wWay').innerHTML = 
+          scalar.ui.select('#dialog .spesific-detail .maxTemp').innerHTML = 
+          scalar.ui.select('#dialog .spesific-detail .minTemp').innerHTML = */
+
 
           
         clearInterval(weatherControl);
@@ -224,7 +234,7 @@ scalar.ui.desktop.wave.config = {
     API_KEY: "d869412526bd58dc27945351b1ef6af2"
   },
   TIME: {
-    SELECT: '#time',
+    SELECT: '#dialog .mdl-dialog__title .weather-time',
     RELOAD: 60000
   },
   WEATHER: {
@@ -239,25 +249,25 @@ scalar.ui.desktop.wave.prototype = {
    
   },
   dateAndTime: function() {
-    /*
-    scalar.exec('date "+%d %B %Y %A"', function(output) {
-      scalar.ui.select('#time-dmy').innerHTML = output;
+    
+    scalar.exec('date "+%d %B %Y, %A"', function(output) {
+      scalar.ui.select('#dialog .mdl-dialog__title .weather-date').innerHTML = output;
     })
-    scalar.exec('date "+%H:%M"', function(output) {
-      scalar.ui.select('#time-hm').innerHTML = output;
-    });
+    /*scalar.exec('date "+%H:%M"', function(output) {
+      scalar.ui.select('#dialog .mdl-dialog__title h3:last-child').innerHTML = output;
+    });*/
     setInterval(function() {
       scalar.exec('date "+%d %B %Y %A"', function(output) {
-        scalar.ui.select('#time-dmy').innerHTML = output;
+        scalar.ui.select('#dialog .mdl-dialog__title .weather-date').innerHTML = output;
       })
-      scalar.exec('date "+%H:%M"', function(output) {
-        scalar.ui.select('#time-hm').innerHTML = output;
-      });
+      /*scalar.exec('date "+%H:%M"', function(output) {
+        scalar.ui.select('#dialog .mdl-dialog__title h3:last-child').innerHTML = output;
+      });*/
     }, this.config.DATEANDTIME.RELOAD);
-    */
+    
   },
   time: function() {
-    /*
+    
     scalar.exec('date "+%H:%M"', function(output) {
       scalar.ui.select(scalar.ui.desktop.wave.config.TIME.SELECT).innerHTML = output;
     });
@@ -267,29 +277,29 @@ scalar.ui.desktop.wave.prototype = {
         scalar.ui.select(scalar.ui.desktop.wave.config.TIME.SELECT).innerHTML = output;
       });
     }, this.config.TIME.RELOAD);
-    */
+    
   },
   weather: function(select, description, temp, control) {
     /*if (control) {
       scalar.ui.select(select + ' .daily-weather-degree span').innerHTML = temp.toString();
-    }
+    }*/
     switch (description) {
       case 800:
         scalar.exec('date "+%H:%M"', function(output) {
           this.timeValue = parseInt(output.split(':')[0])
           if (this.timeValue < 7 || this.timeValue > 18) {
             if (control) {
-              scalar.ui.select(select + ' div').className = 'icon-moon';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-moon';
               scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak.";
             } else {
-              scalar.ui.select(select).className = 'icon-moon';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-moon';
             }
           } else {
             if (control) {
-              scalar.ui.select(select + ' div').className = 'icon-sun';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-sun';
               scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava açık ve ılık olacak.";
             } else {
-              scalar.ui.select(select).className = 'icon-sun';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-sun';
             }
           }
         });
@@ -299,36 +309,36 @@ scalar.ui.desktop.wave.prototype = {
           this.timeValue = parseInt(output.split(':')[0])
           if (this.timeValue < 7 || this.timeValue > 18) {
             if (control) {
-              scalar.ui.select(select + ' div').className = 'icon-cloud';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloud';
               scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava parçalı bulutlu. Herşeye hazırlıklı olun.";
             } else {
-              scalar.ui.select(select).className = 'icon-cloud';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloud';
             }
           } else {
             if (control) {
-              scalar.ui.select(select + ' div').className = 'icon-cloudy';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloudy';
               scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava parçalı bulutlu. Herşeye hazırlıklı olun.";
             } else {
-              scalar.ui.select(select).className = 'icon-cloudy';
+              scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloudy';
             }
           }
         });
         break;
       case 802:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-cloud2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloud2';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kapalı olacak. Dikkatli olun.";
         } else {
-          scalar.ui.select(select).className = 'icon-cloud2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloud2';
         }
         break;
       case 803:
       case 804:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-cloudy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloudy2';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kapalı olacak. Yağmur yağma ihtimaline karşı dikkatli olun.";
         } else {
-          scalar.ui.select(select).className = 'icon-cloudy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-cloudy2';
         }
         break;
       case 300:
@@ -341,10 +351,10 @@ scalar.ui.desktop.wave.prototype = {
       case 314:
       case 321:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-rainy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-rainy2';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kapalı. Aynı zamanda yağmurlu ve gökgürültülü olacak.";
         } else {
-          scalar.ui.select(select).className = 'icon-rainy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-rainy2';
         }
         break;
       case 500:
@@ -357,10 +367,10 @@ scalar.ui.desktop.wave.prototype = {
       case 522:
       case 531:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-rainy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-rainy2';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kapalı ve aynı zamanda yağmurlu olacak. Şemsiyenizi almayı unutmayın.";
         } else {
-          scalar.ui.select(select).className = 'icon-rainy2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-rainy2';
         }
         break;
       case 200:
@@ -374,10 +384,10 @@ scalar.ui.desktop.wave.prototype = {
       case 231:
       case 232:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-lightning2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-lightning2';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kapalı ve gökgürültülü. Dışarıya çıkmak için iyi bir zaman olmayabilir.";
         } else {
-          scalar.ui.select(select).className = 'icon-lightning2';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-lightning2';
         }
         break;
       case 600:
@@ -392,10 +402,10 @@ scalar.ui.desktop.wave.prototype = {
       case 622:
       case 511:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-snowy3';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-snowy3';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava kar yağışlı. Eldivenlerinizi almayı unutmayın kartopu oynamak için iyi bir zaman.";
         } else {
-          scalar.ui.select(select).className = 'icon-snowy3';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-snowy3';
         }
         break;
       case 701:
@@ -409,14 +419,14 @@ scalar.ui.desktop.wave.prototype = {
       case 771:
       case 781:
         if (control) {
-          scalar.ui.select(select + ' div').className = 'icon-weather3';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-weather3';
           scalar.ui.select(select + ' .daily-weather-commend').innerHTML = "Hava sisli olacak. Araç kullanmak için iyi bir zaman değil, dikkatli olun.";
         } else {
-          scalar.ui.select(select).className = 'icon-weather3';
+          scalar.ui.select(select + ' .basicIcon div').className = 'icon-weather3';
         }
         break;
     }
-    */
+    
   } 
 }
 
